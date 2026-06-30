@@ -1,12 +1,19 @@
-name: Using Secrets
+name: Secrets Demo
 
 on: workflow_dispatch
 
 jobs:
-  show-secret:
+  repo-secret-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Use the secret safely
+      - run: echo "Repo secret length: ${#MY_SECRET}"
         env:
           MY_SECRET: ${{ secrets.MY_SECRET }}
-        run: echo "$MY_SECRET"
+
+  env-secret-job:
+    runs-on: ubuntu-latest
+    environment: production   # <-- this line is what unlocks environment secrets
+    steps:
+      - run: echo "Env secret length: ${#PROD_SECRET}"
+        env:
+          PROD_SECRET: ${{ secrets.PROD_SECRET }}
